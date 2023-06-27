@@ -1,0 +1,33 @@
+---
+# docker-compose up -d
+# docker-compose up --build
+# docker-compose down
+# docker-compose down -v
+
+version: "3.6"
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_DATABASE: employees
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: simplepwd
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  mywebapi:
+    image: mywebapi:local
+    container_name: webapi
+    build:
+      context: .
+    ports:
+      - 8080:80
+    depends_on:
+      - postgres
+
+volumes:
+  dbdata:
