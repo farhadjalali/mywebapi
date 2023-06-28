@@ -1,24 +1,31 @@
-# Set the base image
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /work
 
-# Set the working directory
+COPY src/*/*.csproj ./
+RUN for projectFile in $(ls *.csproj); \
+  do \
+    mkdir -p ${projectFile%.*}/ && mv $projectFile ${projectFile%.*}/; \
+  done
+
+RUN dotnet restore /work/Findest.Api/Findest.Api.csproj
+
+COPY src .
+
+# --------------
+
+FROM build AS publish
+WORKDIR /work/Findest.Api
+
+RUN dotnet publish -c Release -o /app --no-restore
+
+# ---------------
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS final
 WORKDIR /app
-
-# Copy everything
-COPY . ./
-# Restore as distinct layers
-RUN dotnet restore
-
-# Build the application
-RUN dotnet publish -c Release -o out
-
-# Build the runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
-WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=publish /app .
 
 # Expose the port
 EXPOSE 80
 
 # Set the entry point
-ENTRYPOINT ["dotnet", "MyWebApi.dll"]
+ENTRYPOINT ["dotnet", "Findest.Api.dll"]

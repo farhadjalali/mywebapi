@@ -1,25 +1,30 @@
-var builder = WebApplication.CreateBuilder(args);
+using Findest.Api;
+using Findest.Api.Configurations;
+using Findest.Core;
+using Serilog;
 
-// Add services to the container.
+Log.Logger = SerilogConfigurator.CreateLogger();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Logger.Information("Starting up");
+    using var webHost = CreateWebHostBuilder(args).Build();
+    await webHost.RunAsync();
+}
+catch (Exception ex)
+{
+    Log.Logger.Fatal(ex, "Application start-up failed");
+    throw;
+}
+finally
+{
+    Log.CloseAndFlush();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+static IHostBuilder CreateWebHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .UseSerilog()
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();
+        });

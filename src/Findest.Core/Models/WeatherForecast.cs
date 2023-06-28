@@ -1,4 +1,4 @@
-namespace MyWebApi.Models;
+namespace Finest.Core.Models;
 
 public class WeatherForecast
 {

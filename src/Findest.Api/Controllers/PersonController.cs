@@ -1,7 +1,7 @@
 namespace MyWebApi.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using MyWebApi.Models;
+using Finest.Core.Models;
 
 [ApiController]
 [Route("api/persons")]
@@ -24,7 +24,6 @@ public class PersonController : ControllerBase
             FirstName = "John",
             LastName = "Doe",
             DateOfBirth = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Email = ""
         })
         .ToArray();
     }
