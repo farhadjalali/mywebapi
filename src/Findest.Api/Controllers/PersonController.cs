@@ -1,30 +1,32 @@
-namespace MyWebApi.Controllers;
-
 using Microsoft.AspNetCore.Mvc;
-using Finest.Core.Models;
+using Findest.Core.Models;
+using Findest.Core.Dtos;
+using Findest.Core.Repositories;
 
-[ApiController]
-[Route("api/persons")]
-public class PersonController : ControllerBase
+namespace Findest.Api.Controllers;
+[Route("[controller]")]
+public class PersonController : ApiControllerBase
 {
-    private readonly ILogger<PersonController> _logger;
+    private readonly IPersonRepository _personRepository;
 
-    public PersonController(ILogger<PersonController> logger)
+    public PersonController(IPersonRepository personRepository)
     {
-        _logger = logger;
+        _personRepository = personRepository;
     }
 
     [HttpGet(Name = "GetPerson")]
-    public IEnumerable<Person> Get()
+    [ProducesResponseType(typeof(IEnumerable<PersonDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllAsync(
+            CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("GetPerson called");
-        return Enumerable.Range(1, 5).Select(index => new Person
+        try
         {
-            Id = index,
-            FirstName = "John",
-            LastName = "Doe",
-            DateOfBirth = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-        })
-        .ToArray();
+            var result = await _personRepository.GetAllAsync(cancellationToken);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

@@ -1,4 +1,4 @@
-using Finest.Core.Models;
+using Findest.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Findest.Core;

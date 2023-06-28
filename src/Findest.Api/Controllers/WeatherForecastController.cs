@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Finest.Core.Models;
+using Findest.Core.Models;
 
-namespace MyWebApi.Controllers;
+namespace Findest.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]

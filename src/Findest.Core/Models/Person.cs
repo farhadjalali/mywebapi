@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Finest.Core.Models;
+namespace Findest.Core.Models;
 [Table("persons")]
 public class Person
 {

@@ -3,6 +3,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.EntityFrameworkCore;
+using Findest.Core.Repositories;
 
 namespace Findest.Api;
 
@@ -20,10 +21,18 @@ public class Startup
         var connectionString = _configuration.GetConnectionString("Postgres")!;
 
         services
-            .AddDbContext<EmployeesContext>(opt => opt.UseNpgsql(connectionString))
-            .AddEndpointsApiExplorer()
-            .AddSwaggerGen()
-            .AddControllers();
+            .AddHttpContextAccessor()
+            .AddRouting(options => options.LowercaseUrls = true)
+            .AddMvcCore()
+            .AddApiExplorer()
+            .AddDataAnnotations();
+
+        services
+        .AddDbContext<EmployeesContext>(opt => opt.UseNpgsql(connectionString))
+        .AddEndpointsApiExplorer()
+        .AddSwaggerGen()
+        .AddScoped(typeof(IPersonRepository), typeof(PersonRepository))
+        .AddControllers();
 
         services.AddHealthChecks().AddNpgSql(connectionString);
     }

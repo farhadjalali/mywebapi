@@ -1,6 +1,5 @@
 using Findest.Api;
 using Findest.Api.Configurations;
-using Findest.Core;
 using Serilog;
 
 Log.Logger = SerilogConfigurator.CreateLogger();

@@ -1,4 +1,4 @@
-namespace Finest.Core.Models;
+namespace Findest.Core.Models;
 
 public class WeatherForecast
 {

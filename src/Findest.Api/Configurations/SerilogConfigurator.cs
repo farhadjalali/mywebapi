@@ -9,6 +9,7 @@ namespace Findest.Api.Configurations
         public static Logger CreateLogger()
         {
             var configuration = LoadAppConfiguration();
+
             return new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();

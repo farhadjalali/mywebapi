@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Findest.Core.Dtos;
-using Finest.Core.Models;
+using Findest.Core.Models;
 using Findest.Core.Extensions;
 
 namespace Findest.Core.Repositories;
@@ -12,9 +12,9 @@ public interface IPersonRepository
 }
 
 
-public class EmployeeRepository : RepositoryBase<Person>, IPersonRepository
+public class PersonRepository : RepositoryBase<Person>, IPersonRepository
 {
-    public EmployeeRepository(EmployeesContext dbContext) : base(dbContext)
+    public PersonRepository(EmployeesContext dbContext) : base(dbContext)
     {
 
     }

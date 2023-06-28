@@ -1,5 +1,5 @@
 using Findest.Core.Dtos;
-using Finest.Core.Models;
+using Findest.Core.Models;
 
 namespace Findest.Core.Extensions;
 
